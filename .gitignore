@@ -1,0 +1,45 @@
+# === Django / Python (backend/) ===
+__pycache__/
+*.py[cod]
+*.sqlite3
+*.log
+.env
+.venv/
+venv/
+env/
+db.sqlite3
+media/
+staticfiles/
+*.egg-info/
+.pytest_cache/
+celerybeat-schedule
+celerybeat.pid
+
+# === Flutter / Dart (frontend/) ===
+**/.dart_tool/
+**/.flutter-plugins
+**/.flutter-plugins-dependencies
+**/build/
+**/ios/Flutter/Flutter.framework
+**/ios/Flutter/Flutter.podspec
+**/ios/Pods/
+**/android/.gradle/
+**/android/local.properties
+*.iml
+.pub-cache/
+.pub/
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+
+# === OS ===
+.DS_Store
+Thumbs.db
+
+# === Secrets ===
+*.env
+**/secrets.dart
+**/google-services.json
+**/GoogleService-Info.plist
