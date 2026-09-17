@@ -1,0 +1,13 @@
+@echo off
+echo Kich hoat moi truong ao...
+call .venv\Scripts\activate
+
+echo Tao va Chay migrations cho MySQL...
+python manage.py makemigrations
+python manage.py migrate
+
+echo Nap du lieu mau...
+python seed_data.py
+
+echo Khoi dong server...
+python manage.py runserver 0.0.0.0:8000
