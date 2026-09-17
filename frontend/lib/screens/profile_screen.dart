@@ -118,7 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               leading: const Icon(Icons.history),
               title: const Text('Lịch sử đặt sân'),
               trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-              onTap: () => HistoryScreen() 
+              onTap: () => HistoryScreen(), 
             ),
             ListTile(
               leading: const Icon(Icons.logout, color: Colors.red),

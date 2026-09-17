@@ -7,7 +7,7 @@ class UserSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField()
     class Meta:
         model = User
-        fields = ['id', 'email', 'fullname', 'phone', 'password', 'avatar', 'role', 'is_active','is_owner_requested']
+        fields = ['id', 'email', 'fullname', 'phone', 'password', 'avatar', 'role', 'is_active','is_owner_requested','is_approved',]
 
         extra_kwargs = {
             'password': {'write_only': True},
@@ -26,16 +26,15 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Không thể tự đăng ký tài khoản Quản trị viên.")
         return value
     def create(self, validated_data):
-        frontend_role = validated_data.pop('role', None)
         password = validated_data.pop('password')
         email = validated_data.pop('email')
         is_owner_requested = validated_data.pop('is_owner_requested', False)
-        is_owner_req = validated_data.pop('is_owner_requested', None)
-        if frontend_role in ['Owner', 'owner'] or str(is_owner_req).lower() == 'true':
-            final_role = 'Owner'
-            is_approved = False  # Chờ duyệt
+
+        if is_owner_requested:
+            final_role = 'owner'
+            is_approved = False
         else:
-            final_role = 'Player'
+            final_role = 'player'
             is_approved = True
         user = User(
             email=email,
@@ -43,6 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
             role=final_role,
             is_active=True,
             is_approved=is_approved,
+            is_owner_requested=is_owner_requested,
             **validated_data
         )
         user.set_password(password)

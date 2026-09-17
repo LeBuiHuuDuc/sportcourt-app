@@ -33,36 +33,44 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = true);
 
     final authsevcice = AuthService();
-    final isSuccess = await authsevcice.login(email,password);
+    final loginError = await authsevcice.login(email, password);
+
     if (!mounted) return;
     setState(() => _isLoading = false);
-    
-    if (isSuccess) {
-      Fluttertoast.showToast(msg: "Đăng nhập thành công!");
 
-      final prefs = await SharedPreferences.getInstance();
-      final String role = prefs.getString('role') ?? 'player';
-
-      if (!mounted) return;
-
-      if(role == 'owner'){
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const OwnerDashboardScreen()),
-        );
-      }
-      else {
-        Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
-      }
-      
-    } else {
+    if (loginError != null) {
       Fluttertoast.showToast(
-        msg: "Sai email hoặc mật khẩu!",
+        msg: loginError,
         backgroundColor: Colors.red,
         textColor: Colors.white,
+        toastLength: Toast.LENGTH_LONG,
+      );
+      return;
+    }
+
+    Fluttertoast.showToast(
+      msg: "Đăng nhập thành công!",
+    );
+
+    final prefs = await SharedPreferences.getInstance();
+
+    final String role = prefs.getString('role') ?? 'player';
+
+    if (!mounted) return;
+
+    if (role == 'owner') {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const OwnerDashboardScreen(),
+        ),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
       );
     }
   }

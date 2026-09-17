@@ -134,9 +134,10 @@ class _PaymentScreenState extends State<PaymentScreen>{
     }
     @override
     void dispose() {
-      _timer?.cancel();
-      super.dispose();
-    }
+    _timer?.cancel();
+    _checkTimer?.cancel();
+    super.dispose();
+  }
   String _formatTime(int time) => time.toString().padLeft(2, '0');
   @override
   Widget build(BuildContext context) {
@@ -145,10 +146,55 @@ class _PaymentScreenState extends State<PaymentScreen>{
     return Scaffold(
       backgroundColor: Colors.grey.shade50,
       appBar: AppBar(
-        title: const Text('Thanh toán', style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Thanh toán',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black,
         elevation: 0,
+
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () async {
+            final shouldExit = await showDialog<bool>(
+              context: context,
+              barrierDismissible: false,
+              builder: (context) => AlertDialog(
+                title: const Text('Hủy thanh toán?'),
+                content: const Text(
+                  'Bạn có chắc muốn hủy thanh toán và quay lại không?\n\n'
+                  'Ca sân hiện đang được giữ tạm thời.',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context, false);
+                    },
+                    child: const Text('Không'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                    ),
+                    child: const Text('Hủy thanh toán'),
+                  ),
+                ],
+              ),
+            );
+            if (shouldExit == true  ) {
+              _timer?.cancel();
+              _checkTimer?.cancel();
+              Navigator.pop(context);
+            }
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

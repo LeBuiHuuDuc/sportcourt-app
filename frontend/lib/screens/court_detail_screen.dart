@@ -14,8 +14,6 @@ class _CourtDetailScreenState extends State<CourtDetailScreen> {
   @override
   void initState() {
     super.initState();
-    debugPrint('🔥 TẤT CẢ DỮ LIỆU SÂN: ${widget.courtData}');
-    debugPrint('🔥 REVIEWS TỪ API: ${widget.courtData['reviews']}');
     localReviews = List.from(widget.courtData['reviews'] ?? []);
   }
 
@@ -75,11 +73,10 @@ class _CourtDetailScreenState extends State<CourtDetailScreen> {
                       : () async {
                           setPopupState(() => isSubmitting = true);
                           try {
-                            // Không cần gửi booking_id nữa, backend tự lo!
                             await ApiClient().dio.post(
                               'community/reviews/',
                               data: {
-                                'court': widget.courtData['id'], // ID của sân hiện tại
+                                'court': widget.courtData['id'], 
                                 'rating': rating,
                                 'comment': commentController.text,
                               },
@@ -103,12 +100,10 @@ class _CourtDetailScreenState extends State<CourtDetailScreen> {
                               );
                             }
                           } catch (e) {
-                            debugPrint('Lỗi gửi đánh giá: $e');
                             setPopupState(() => isSubmitting = false);
                             if (context.mounted) {
                               String errorMsg = 'Có lỗi xảy ra, vui lòng thử lại!';
                               if (e is DioException && e.response?.data != null) {
-                                debugPrint('🔥 DỮ LIỆU LỖI TỪ DJANGO: ${e.response?.data}');
                                 final data = e.response?.data;
                                 if (data is Map && data.containsKey('detail')) {
                                   errorMsg = data['detail'];

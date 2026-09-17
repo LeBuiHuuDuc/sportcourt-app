@@ -56,7 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       setState(() {
         _isLoading = false;
       });
-      return; // Dừng luôn, không gọi API nữa
+      return; 
     }
     if (password != confirmPassword) {
       setState(() {
@@ -81,16 +81,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
       password: password,
       avatar: _avatarImage,
       isOwnerRequested: _isOwnerRequested,
-      
     );
     setState(() {
       _isLoading = false;
     });
     if (success) {
       if (!mounted) return;
+      
+      String message = _isOwnerRequested
+        ? 'Đăng ký yêu cầu làm Chủ sân thành công! Vui lòng chờ Admin phê duyệt tài khoản.'
+        : 'Đăng ký tài khoản thành công! Vui lòng đăng nhập.';
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Đăng ký thành công! Vui lòng đăng nhập.'),
+        SnackBar(
+          content: Text(message),
+          backgroundColor: Colors.green,
+          duration: const Duration(seconds: 4),
         ),
       );
       Navigator.pop(context);

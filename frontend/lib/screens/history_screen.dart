@@ -253,19 +253,32 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                 ],
                               ),
                               const SizedBox(height: 16),
-                              SizedBox(
-                                width: double.infinity,
-                                child: OutlinedButton.icon(
-                                  onPressed: () => _showCreateMatchDialog(context, booking['id']),
-                                  icon: const Icon(Icons.group_add_outlined, size: 18),
-                                  label: const Text('Đăng tìm bạn chơi chung'),
-                                  style: OutlinedButton.styleFrom(
-                                    foregroundColor: Colors.blue.shade700,
-                                    side: BorderSide(color: Colors.blue.shade200),
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                              if ((booking['status'] ?? '').toString().toLowerCase() == 'confirmed')
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: OutlinedButton.icon(
+                                    onPressed: () => _showCreateMatchDialog(
+                                      context,
+                                      booking['id'],
+                                    ),
+                                    icon: const Icon(
+                                      Icons.group_add_outlined,
+                                      size: 18,
+                                    ),
+                                    label: const Text(
+                                      'Đăng tìm bạn chơi chung',
+                                    ),
+                                    style: OutlinedButton.styleFrom(
+                                      foregroundColor: Colors.blue.shade700,
+                                      side: BorderSide(
+                                        color: Colors.blue.shade200,
+                                      ),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
                             ],
                           ),
                         ),
